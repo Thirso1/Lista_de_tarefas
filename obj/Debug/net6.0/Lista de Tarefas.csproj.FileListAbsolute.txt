@@ -1,0 +1,15 @@
+C:\Users\casa\Documents\Lista de Tarefas\bin\Debug\net6.0\Lista de Tarefas.exe
+C:\Users\casa\Documents\Lista de Tarefas\bin\Debug\net6.0\Lista de Tarefas.deps.json
+C:\Users\casa\Documents\Lista de Tarefas\bin\Debug\net6.0\Lista de Tarefas.runtimeconfig.json
+C:\Users\casa\Documents\Lista de Tarefas\bin\Debug\net6.0\Lista de Tarefas.dll
+C:\Users\casa\Documents\Lista de Tarefas\bin\Debug\net6.0\Lista de Tarefas.pdb
+C:\Users\casa\Documents\Lista de Tarefas\obj\Debug\net6.0\Lista de Tarefas.csproj.AssemblyReference.cache
+C:\Users\casa\Documents\Lista de Tarefas\obj\Debug\net6.0\Lista de Tarefas.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\casa\Documents\Lista de Tarefas\obj\Debug\net6.0\Lista de Tarefas.AssemblyInfoInputs.cache
+C:\Users\casa\Documents\Lista de Tarefas\obj\Debug\net6.0\Lista de Tarefas.AssemblyInfo.cs
+C:\Users\casa\Documents\Lista de Tarefas\obj\Debug\net6.0\Lista de Tarefas.csproj.CoreCompileInputs.cache
+C:\Users\casa\Documents\Lista de Tarefas\obj\Debug\net6.0\Lista de Tarefas.dll
+C:\Users\casa\Documents\Lista de Tarefas\obj\Debug\net6.0\refint\Lista de Tarefas.dll
+C:\Users\casa\Documents\Lista de Tarefas\obj\Debug\net6.0\Lista de Tarefas.pdb
+C:\Users\casa\Documents\Lista de Tarefas\obj\Debug\net6.0\Lista de Tarefas.genruntimeconfig.cache
+C:\Users\casa\Documents\Lista de Tarefas\obj\Debug\net6.0\ref\Lista de Tarefas.dll
