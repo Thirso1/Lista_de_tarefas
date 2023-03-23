@@ -8,6 +8,7 @@ using System.Globalization;
 using System.Reflection.Metadata;
 using System.Runtime.CompilerServices;
 using System.Runtime.ConstrainedExecution;
+using static System.Net.Mime.MediaTypeNames;
 
  string[] nome = new string[22];
  string[] _descricao = new string[50];
@@ -22,7 +23,9 @@ void main()
 {
     criaMenu();
     int numero;
+    //tenta converter para inteiro
     bool resultado = Int32.TryParse(Console.ReadLine(), out numero);
+
     if (resultado)
     {
         processaMenu(numero);
@@ -36,7 +39,7 @@ void main()
 
 void criaMenu()
 {
-    string menu = ("============================================")+
+    string menu = ("\n============================================") +
         "\n" +
         "Digite uma das opções abaixo:\n" +
         "\n    0 - Sair do Sistema " +
@@ -87,7 +90,8 @@ void processaMenu(int valor)
 }
 
 void ExcluirTarefa(){
-    Tarefa tarefa = ConsultarTarefa();
+    int index = ConsultarTarefa();
+    Tarefa tarefa = listaTarefas[index];
     if (tarefa != null)
     {
         Console.WriteLine("Deseja Excluir esta Tarefa?");
@@ -111,51 +115,48 @@ void ExcluirTarefa(){
     }
 }
 
-    Tarefa ConsultarTarefa()
+    int ConsultarTarefa()
 {
-    Console.WriteLine("Digite o Título da Tarefa:");
+    Console.WriteLine("Busque pelo Título da Tarefa:");
     string titulo = Console.ReadLine();
     int cont = 0;
     foreach (Tarefa t in listaTarefas)
     {        
-        if (t.Titulo == titulo)
+        if (t.Titulo.Contains(titulo))
         {
             exibeTarefa(t);
             cont++;
-            return t;
+            return listaTarefas.IndexOf(t);
+           
         }
     }
     if (cont == 0)
     {
         Console.WriteLine("Nenhum tarefa encontrada!");
-        return null;
+        return 0;
     }
-    return null;
+    return 0;
 }
 
 
 void EditarTarefa()
 {
-    Tarefa tarefa = ConsultarTarefa();
-    if(tarefa != null)
+    int index = ConsultarTarefa();
+    Tarefa tarefa = listaTarefas[index];
+    if (tarefa != null)
     {
-        exibeTarefa(tarefa);
+        Tarefa tarefaAtualizada = MontaTarefa(1);
 
-        Console.WriteLine("Edite o Título da Tarefa:");
-        tarefa.Titulo = Console.ReadLine();
-
-        Console.WriteLine("Digite a descrição da Tarefa:");
-        tarefa.Descricao = Console.ReadLine();
-
-        Console.WriteLine("Digite o vencimento da Tarefa:");
-        string dataStr = Console.ReadLine();
-        while (!validaData(dataStr))
+        if (!existeTarefa(tarefaAtualizada))
         {
-            Console.WriteLine("Digite uma data válida!");
-            dataStr = Console.ReadLine();
+            listaTarefas[index] = tarefaAtualizada;
+            Console.WriteLine("Tarefa atualizada com sucesso!");
         }
-        tarefa.Vencimento = Convert.ToDateTime(dataStr);
-        Console.WriteLine("Tarefa atualizada com sucesso!");
+        else
+        {
+            Console.WriteLine("Essa tarefa já existe!");
+
+        }
     }
 }
 void ListarTarefas()
@@ -185,29 +186,99 @@ void exibeTarefa(Tarefa tarefa)
 bool validaData(string dataStr)
 {
     DateTime valor;
-    return DateTime.TryParseExact(dataStr, "dd/MM/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out valor);
+    if (DateTime.TryParseExact(dataStr, "dd/MM/yyyy HH:mm", CultureInfo.InvariantCulture, DateTimeStyles.None, out valor))
+    {
+        if (valor > DateTime.Now)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+    else
+    {
+        return false;
+    }
 }
 
-void CriarTarefa()
+Tarefa MontaTarefa(int tipoAcao)
 {
+    string acao = "";
+    if(tipoAcao== 0)
+    {
+        acao = "Digite";
+    }
+    else 
+    {
+        acao = "Edite";
+    }
+
     Tarefa tarefa = new Tarefa();
-    Console.WriteLine("Digite o Título da Tarefa:");
+    Console.WriteLine(acao+" o Título da Tarefa:");
     tarefa.Titulo = Console.ReadLine();
 
-    Console.WriteLine("Digite a descrição da Tarefa:");
+    Console.WriteLine(acao +" a descrição da Tarefa:");
     tarefa.Descricao = Console.ReadLine();
 
-    Console.WriteLine("Digite o vencimento da Tarefa:");
+    Console.WriteLine(acao + " a data da Tarefa:");
     string dataStr = Console.ReadLine();
-    while (!validaData(dataStr))
+    Console.WriteLine(acao + " o horário da Tarefa:");
+    string horaStr = Console.ReadLine();
+
+    while (!validaData(dataStr + " " + horaStr))
     {
-        Console.WriteLine("Digite uma data válida!");
+
+        Console.WriteLine("Data e horário inválidos!");
+        Console.WriteLine(acao + " a data da tarefa!");
         dataStr = Console.ReadLine();
+        Console.WriteLine(acao + " o horário da Tarefa:");
+        horaStr = Console.ReadLine();
+
     }
+
     tarefa.Vencimento = Convert.ToDateTime(dataStr);
-    listaTarefas.Add(tarefa);
+
+    return tarefa;
+}
+void CriarTarefa()
+{
+    Tarefa tarefa = MontaTarefa(0);
+
+    if (!existeTarefa(tarefa))
+    {
+        listaTarefas.Add(tarefa);
+        Console.WriteLine("Tarefa criada com sucesso!");
+    }
+    else
+    {
+        Console.WriteLine("Essa tarefa já existe!");
+
+    }
 }
 
+bool existeTarefa(Tarefa tarefa)
+{
+    bool existe = false;    
+    // Consultar se existe essa tarefa 
+    foreach (Tarefa t in listaTarefas)
+    {
+        if (t.Titulo == tarefa.Titulo &&
+            t.Descricao == tarefa.Descricao &&
+            t.Vencimento == tarefa.Vencimento)
+        {
+            existe = true;
+            return existe;
+        }
+        else
+        {
+            existe = false;
+            return existe;
+        }
+    }
+    return existe;
+}
 
 bool processaDecisao(string decisao)
 {
@@ -323,6 +394,7 @@ string formataVencimento(string data)
 
 class Tarefa
 {
+    public int Numero { get; set; }
     public string Titulo { get; set; }
     public string Descricao { get; set; }
     public DateTime Vencimento { get; set; }
